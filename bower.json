@@ -1,0 +1,10 @@
+{
+  "name": "ceburilo",
+  "version": "0.0.0",
+  "authors": [
+    "Leonid Logvinov <logvinov.leon@yandex.ru>"
+  ],
+  "dependencies": {
+    "materialize": "~0.96.1"
+  }
+}

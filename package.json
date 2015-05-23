@@ -1,0 +1,28 @@
+{
+  "name": "ceburilo",
+  "private": true,
+  "version": "0.0.0",
+  "repository": "https://github.com/LogvinovLeon/Ceburilo",
+  "engines": {
+    "node": ">= 0.10",
+    "npm": ">= 2.1"
+  },
+  "dependencies": {
+    "es6-promise": "^1.0.0",
+    "flux": "^2.0.1",
+    "jquery": "^2.1.1",
+    "react": "^0.13.3",
+    "react-googlemaps": "~0.4.0",
+    "react-geosuggest": "~1.1.0",
+    "gmaps-places-autocomplete": "~0.1.6",
+    "gulp-concat": "~2.5.2",
+    "eventemitter3": "~1.1.0",
+    "gulp-notify": "^2.0.0",
+    "watchify": "^2.0.0",
+    "reactify": "^1.1.1",
+    "browserify": "^6.0.0",
+    "gulp-util": "^3.0.1",
+    "gulp": "^3.8.7",
+    "vinyl-source-stream": "^1.0.0"
+  }
+}
