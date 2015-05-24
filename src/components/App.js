@@ -93,7 +93,7 @@ var App = React.createClass({
                     beg_lon: this.state.start.location.lng,
                     dest_lat: this.state.finish.location.lat,
                     dest_lon: this.state.finish.location.lng,
-                    begining: this.state.start.label,
+                    beginning: this.state.start.label,
                     destination: this.state.finish.label
                 }),
                 null,

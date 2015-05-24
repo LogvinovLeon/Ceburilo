@@ -55,8 +55,7 @@ var Geosuggest = React.createClass({
         }
         this.state.autocompleteService.getPlacePredictions({
             input: userInput,
-            /*TODO*/
-            location: new google.maps.LatLng(0, 0),
+            location: new google.maps.LatLng(52.229833, 21.011734),
             radius: this.props.radius
         }, function (suggestsGoogle) {
             console.log("test1");

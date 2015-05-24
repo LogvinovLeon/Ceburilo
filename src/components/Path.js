@@ -26,15 +26,28 @@ var Path = React.createClass({
             fillColor="#64b5f6"
             center={new LatLng(this.state.location.coords.latitude, this.state.location.coords.longitude)}
             radius={this.state.location.coords.accuracy}/>;
-        if (this.state.route.path) {
-            var points = this.state.route.path.points.coordinates.map(this._toPosition);
+        if (this.state.route.path === undefined || this.state.route.path.points === null) {
+            var route = null;
+            if (this.state.route.beg_coord && this.state.route.dest_coord) {
+                var from_start = (<Polyline
+                    strokeColor="#999"
+                    path={[this.state.route.beg_coord, this.state.route.dest_coord].map(this._toPosition)}/>);
+            } else {
+                from_start = null;
+            }
+            var to_finish = null;
+        } else {
+            console.log(this.state.route.path.points.coordinates);
+            route = (<Polyline
+                strokeColor="#000"
+                path={this.state.route.path.points.coordinates.map(this._toPosition)}/>);
+            from_start = (<Polyline
+                strokeColor="#999"
+                path={[this.state.route.beg_coord, this.state.route.path.points.coordinates[0]].map(this._toPosition)}/>);
+            to_finish = (<Polyline
+                strokeColor="#999"
+                path={[this.state.route.dest_coord, this.state.route.path.points.coordinates.slice(-1)[0]].map(this._toPosition)}/>);
         }
-        var route = this.state.route.path === undefined ? null :
-            (
-                <Polyline
-                    strokeColor="#000"
-                    path={this.state.route.path.points.coordinates.map(this._toPosition)}/>
-            );
         var overlay =
             (
                 <OverlayView
@@ -67,10 +80,13 @@ var Path = React.createClass({
                         this.state.route.stations.map(this._renderMarker)}
                     {location_circle}
                     {route}
+                    {from_start}
+                    {to_finish}
                 </Map>
             </div>
         );
-    },
+    }
+    ,
     _handlePathStoreChange: function () {
         this.setState(function (previousState, currentProps) {
             var state = PathStore.getState();
@@ -89,7 +105,8 @@ var Path = React.createClass({
             return state;
         });
         this.setState(PathStore.getState());
-    },
+    }
+    ,
     _getMapBound: function (points) {
         var min_x = Infinity,
             max_x = -Infinity,
@@ -112,17 +129,20 @@ var Path = React.createClass({
         var zoom = Math.min((16 - Math.log(scale) / Math.log(2)), 12);
         var center = new LatLng((min_x + max_x) / 2, (min_y + max_y) / 2);
         return {zoom: zoom, center: center};
-    },
+    }
+    ,
     _handleCenterChange: function (map) {
         this.setState({
             center: map.getCenter()
         });
-    },
+    }
+    ,
     _handleZoomChange: function (map) {
         this.setState({
             zoom: map.getZoom()
         });
-    },
+    }
+    ,
     _renderMarker: function (state, i) {
         return (
             <Marker position={this._toPosition(state.location)}
@@ -130,7 +150,8 @@ var Path = React.createClass({
                     labelContent={state.name}
                 />
         );
-    },
+    }
+    ,
     _toPosition: function (pos) {
         if (pos.F !== undefined) {
             var res = new LatLng(pos.A, pos.F);
