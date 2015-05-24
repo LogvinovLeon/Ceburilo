@@ -150,6 +150,7 @@ var Path = React.createClass({
             <Marker position={this._toPosition(state.location)}
                     key={i}
                     icon={'marker.png'}
+                    draggable={i==0}
                 />
         );
     },

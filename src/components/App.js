@@ -11,11 +11,22 @@ var App = React.createClass({
         getInitialState: function () {
             return {
                 start: {},
-                finish: {}
+                finish: {},
+                fixtures: []
             }
         },
         componentDidMount: function () {
             this._notificationSystem = this.refs.notificationSystem;
+            function parseOrEmpty(str) {
+              try {
+                return JSON.parse(str);
+              } catch (e) {
+                return [];
+              }
+            }
+            this.setState({
+              fixtures: parseOrEmpty(localStorage.fixtures)
+            });
         },
         render: function () {
             return (
@@ -27,6 +38,7 @@ var App = React.createClass({
                                         auto_detect={true}
                                         ns={this._notificationSystem}
                                         placeholder="From"
+                                        fixtures={this.state.fixtures}
                                         onSuggestSelect={this._onStartSelected}
                                         location={Constants.WarsawPosition}
                                         radius={Constants.WarsawRadius}/>
@@ -35,6 +47,7 @@ var App = React.createClass({
                             <Geosuggest id="to"
                                         auto_detect={false}
                                         placeholder="To"
+                                        fixtures={this.state.fixtures}
                                         onSuggestSelect={this._onFinishSelected}
                                         location={Constants.WarsawPosition}
                                         radius={Constants.WarsawRadius}/>
@@ -114,11 +127,25 @@ var App = React.createClass({
                     Actions.errorPathResponse();
                 })
         },
-        _onStartSelected: function (event) {
-            this.setState({start: event});
+        _onStartSelected: function (data) {
+            this.setState({start: data});
+            this._addFixture(data);
         },
-        _onFinishSelected: function (event) {
-            this.setState({finish: event});
+        _onFinishSelected: function (data) {
+            this.setState({finish: data});
+            this._addFixture(data);
+        },
+        _addFixture: function (location) {
+            if(location.label == 'My location')
+              return;
+            const fixtures = [].concat.apply([location],
+                this.state.fixtures
+                .filter(function(x) { return x.label != location.label; })
+                .slice(0, 5))
+            localStorage.fixtures = JSON.stringify(fixtures);
+            this.setState({
+              fixtures: fixtures
+            });
         }
     })
     ;
