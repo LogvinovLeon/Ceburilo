@@ -132,7 +132,11 @@ var App = React.createClass({
             this._addFixture(data);
         },
         _onFinishSelected: function (data) {
-            this.setState({finish: data});
+            this.setState({finish: data}, function() {
+              if(this.state.start) {
+                this._onSubmit();
+              }
+            });
             this._addFixture(data);
         },
         _addFixture: function (location) {
