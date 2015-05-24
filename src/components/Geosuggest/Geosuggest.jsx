@@ -282,13 +282,13 @@ var Geosuggest = React.createClass({
                        className="geosuggest__input"
                        ref="geosuggestInput"
                        type="text"
+                       placeholder={this.props.placeholder}
                        value={this.state.userInput}
                        onKeyDown={this.onInputKeyDown}
                        onChange={this.onInputChange}
                        onFocus={this.showSuggests}
                        onBlur={this.hideSuggests}>
                 </input>
-                <label for={this.props.placeholder}>{this.props.placeholder}</label>
                 <ul className={this.getSuggestsClasses()}>
                     {this.getSuggestItems()}
                 </ul>
