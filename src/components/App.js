@@ -58,7 +58,11 @@ var App = React.createClass({
                             <i className="mdi-content-send right"></i>
                         </button>
                     </div>
-                    <Path ref="path" onUpdate={this._onPathUpdate}/>
+                    <Path ref="path"
+                          onUpdate={this._onPathUpdate}
+                          beginCoord={this.state.start.location}
+                          destCoord={this.state.finish.location}
+                       />
                     <NotificationSystem ref="notificationSystem"/>
                 </div>
             );

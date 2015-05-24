@@ -20,6 +20,12 @@ var Path = React.createClass({
     componentWillUnmount: function () {
         PathStore.off(this._handlePathStoreChange)
     },
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            beg_coord: this._toPosition(nextProps.beginCoord),
+            dest_coord: this._toPosition(nextProps.destCoord)
+        });
+    },
     render: function () {
         var location_circle = this.state.location.coords === undefined ? null : <Circle
             strokeColor="#64b5f6"
@@ -77,8 +83,8 @@ var Path = React.createClass({
                     {this.state.route.stations === undefined ?
                         null :
                         this.state.route.stations.map(this._renderMarker)}
-                    {this.state.route.beg_coord ? this._renderCustomMarker('beg_coord', this.state.route.beg_coord, 'start.png') : null}
-                    {this.state.route.dest_coord ? this._renderCustomMarker('dest_coord', this.state.route.dest_coord, 'finish.png') : null}
+                    {this.state.beg_coord ? this._renderCustomMarker('beg_coord', 'start.png') : null}
+                    {this.state.dest_coord ? this._renderCustomMarker('dest_coord', 'finish.png') : null}
                     {location_circle}
                     {route}
                     {from_start}
@@ -152,7 +158,8 @@ var Path = React.createClass({
                 />
         );
     },
-    _renderCustomMarker: function (stateVar, location, icon_path) {
+    _renderCustomMarker: function (stateVar, icon_path) {
+        const location = this.state[stateVar];
         return (
             <Marker position={this._toPosition(location)}
                     icon={icon_path}
@@ -164,23 +171,23 @@ var Path = React.createClass({
     },
     _handleDrag: function(stateVar, event) {
         var update = {};
-        update[stateVar] = {$set: event.latLng};
-        const newRoute = React.addons.update(this.state.route, update);
-        this.setState({
-          route: newRoute
-        });
+        update[stateVar] = event.latLng;
+        this.setState(update);
     },
     _onLocationsUpdated: function() {
       if(this.props.onUpdate) {
         this.props.onUpdate({
-          start: this._toPosition(this.state.route.beg_coord),
-          finish: this._toPosition(this.state.route.dest_coord)
+          start: this._toPosition(this.state.beg_coord),
+          finish: this._toPosition(this.state.dest_coord)
         });
       }
     },
     _toPosition: function (pos) {
+        if(!pos) return null;
         if (pos.F !== undefined) {
             var res = new LatLng(pos.A, pos.F);
+        } else if (pos.lat !== undefined) {
+            var res = new LatLng(pos.lat, pos.lng);
         } else {
             res = new LatLng(Math.max(pos[0], pos[1]), Math.min(pos[0], pos[1]));
         }
