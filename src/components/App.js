@@ -132,12 +132,16 @@ var App = React.createClass({
                 })
         },
         _onStartSelected: function (data) {
-            this.setState({start: data});
+            this.setState({start: data}, function() {
+              if(this.state.finish.location) {
+                this._onSubmit();
+              }
+            });
             this._addFixture(data);
         },
         _onFinishSelected: function (data) {
             this.setState({finish: data}, function() {
-              if(this.state.start) {
+              if(this.state.start.location) {
                 this._onSubmit();
               }
             });
