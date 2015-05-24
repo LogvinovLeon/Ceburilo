@@ -140,7 +140,7 @@ var App = React.createClass({
             this._addFixture(data);
         },
         _addFixture: function (location) {
-            if(location.label == 'My location')
+            if(!location.label || location.label == 'My location')
               return;
             const fixtures = [].concat.apply([location],
                 this.state.fixtures
