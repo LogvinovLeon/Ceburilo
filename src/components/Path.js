@@ -27,9 +27,7 @@ var Path = React.createClass({
             center={new LatLng(this.state.location.coords.latitude, this.state.location.coords.longitude)}
             radius={this.state.location.coords.accuracy}/>;
         if (this.state.route.path) {
-            console.log("PATH");
             var points = this.state.route.path.points.coordinates.map(this._toPosition);
-            console.log(points);
         }
         var route = this.state.route.path === undefined ? null :
             (
@@ -37,14 +35,6 @@ var Path = React.createClass({
                     strokeColor="#000"
                     path={this.state.route.path.points.coordinates.map(this._toPosition)}/>
             );
-        var test = [Constants.WarsawPosition(), this.state.center, Constants.WarsawPosition()];
-        console.log("TESTING");
-        console.log(test.map(this._toPosition));
-        //var route = (
-        //    <Polyline
-        //        strokeColor="#000"
-        //        path={test.map(this._toPosition)}/>
-        //);
         var overlay =
             (
                 <OverlayView
@@ -145,8 +135,9 @@ var Path = React.createClass({
         if (pos.F !== undefined) {
             var res = new LatLng(pos.A, pos.F);
         } else {
-            res = new LatLng(pos[0], pos[1]);
+            res = new LatLng(Math.max(pos[0], pos[1]), Math.min(pos[0], pos[1]));
         }
+        console.log(res);
         return res;
     }
 });
