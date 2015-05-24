@@ -58,7 +58,7 @@ var App = React.createClass({
                             <i className="mdi-content-send right"></i>
                         </button>
                     </div>
-                    <Path ref="path"/>
+                    <Path ref="path" onUpdate={this._onPathUpdate}/>
                     <NotificationSystem ref="notificationSystem"/>
                 </div>
             );
@@ -150,6 +150,21 @@ var App = React.createClass({
             this.setState({
               fixtures: fixtures
             });
+        },
+        _onPathUpdate: function({start, finish}) {
+          function toPoint(loc) {
+            return {
+              label: loc.A + ', ' + loc.F,
+              location: {
+                lat: loc.A,
+                lng: loc.F
+              }
+            };
+          }
+          this.setState({
+            start: toPoint(start),
+            finish: toPoint(finish)
+          }, function() { this._onSubmit(); });
         }
     })
     ;

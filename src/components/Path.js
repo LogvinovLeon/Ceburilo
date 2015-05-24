@@ -37,7 +37,6 @@ var Path = React.createClass({
             }
             var to_finish = null;
         } else {
-            console.log(this.state.route.path.points.coordinates);
             route = (<Polyline
                 strokeColor="#000"
                 path={this.state.route.path.points.coordinates.map(this._toPosition)}/>);
@@ -78,8 +77,8 @@ var Path = React.createClass({
                     {this.state.route.stations === undefined ?
                         null :
                         this.state.route.stations.map(this._renderMarker)}
-                    {this.state.route.beg_coord ? this._renderCustomMarker(this.state.route.beg_coord, 'start.png') : null}
-                    {this.state.route.dest_coord ? this._renderCustomMarker(this.state.route.dest_coord, 'finish.png') : null}
+                    {this.state.route.beg_coord ? this._renderCustomMarker('beg_coord', this.state.route.beg_coord, 'start.png') : null}
+                    {this.state.route.dest_coord ? this._renderCustomMarker('dest_coord', this.state.route.dest_coord, 'finish.png') : null}
                     {location_circle}
                     {route}
                     {from_start}
@@ -150,16 +149,34 @@ var Path = React.createClass({
             <Marker position={this._toPosition(state.location)}
                     key={i}
                     icon={'marker.png'}
-                    draggable={i==0}
                 />
         );
     },
-    _renderCustomMarker: function (location, icon_path) {
+    _renderCustomMarker: function (stateVar, location, icon_path) {
         return (
             <Marker position={this._toPosition(location)}
                     icon={icon_path}
+                    onDrag={this._handleDrag.bind(this, stateVar)}
+                    onDragEnd={this._onLocationsUpdated}
+                    draggable={true}
                 />
         );
+    },
+    _handleDrag: function(stateVar, event) {
+        var update = {};
+        update[stateVar] = {$set: event.latLng};
+        const newRoute = React.addons.update(this.state.route, update);
+        this.setState({
+          route: newRoute
+        });
+    },
+    _onLocationsUpdated: function() {
+      if(this.props.onUpdate) {
+        this.props.onUpdate({
+          start: this._toPosition(this.state.route.beg_coord),
+          finish: this._toPosition(this.state.route.dest_coord)
+        });
+      }
     },
     _toPosition: function (pos) {
         if (pos.F !== undefined) {
@@ -167,7 +184,6 @@ var Path = React.createClass({
         } else {
             res = new LatLng(Math.max(pos[0], pos[1]), Math.min(pos[0], pos[1]));
         }
-        console.log(res);
         return res;
     }
 });
