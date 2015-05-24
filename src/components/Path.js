@@ -23,7 +23,6 @@ var Path = React.createClass({
         PathStore.off(this._handlePathStoreChange)
     },
     render: function () {
-        console.log(this.state);
         var route = this.state.route.path === undefined ? null :
             (
                 <Polyline
@@ -51,7 +50,6 @@ var Path = React.createClass({
                     {this.state.route.stations === undefined ?
                         null :
                         this.state.route.stations.map(this._renderMarker)}
-                    {route}
                 </Map>
             </div>
         );

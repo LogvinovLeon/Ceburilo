@@ -36,5 +36,15 @@ body {
 }
 
 main {
-    flex: 1 0 auto;
+    height: 60%;
+}
+
+header {
+    height: 20%;
+}
+
+footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 20%;
 }

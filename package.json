@@ -23,6 +23,8 @@
     "browserify": "^6.0.0",
     "gulp-util": "^3.0.1",
     "gulp": "^3.8.7",
-    "vinyl-source-stream": "^1.0.0"
+    "vinyl-source-stream": "^1.0.0",
+    "react-toastr": "~1.4.0",
+    "react-notification-system": "~0.1.10"
   }
 }
