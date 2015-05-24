@@ -7,15 +7,15 @@
 }
 
 #app, .App, .Path {
-  position: fixed;
-  top: 55px;
-  bottom: 30px;
-  left: 0;
-  right: 0;
+    position: fixed;
+    top: 55px;
+    bottom: 30px;
+    left: 0;
+    right: 0;
 }
 
 .Path {
-  top: 125px;
+    top: 125px;
 }
 
 .Path > div:last-child {
@@ -35,7 +35,6 @@
 body {
     display: flex;
     flex-direction: column;
-
 }
 
 header {
@@ -43,11 +42,21 @@ header {
 }
 
 footer {
-  position: fixed;
-  height: 30px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin-top: 0 !important;
-  padding-top: 4px !important;
+    position: fixed;
+    height: 30px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 0 !important;
+    padding-top: 4px !important;
+}
+
+#logo-container > img {
+    float: left;
+    height: 7%;
+    width: 7%;
+}
+
+.title {
+    margin-left: 10%;
 }
