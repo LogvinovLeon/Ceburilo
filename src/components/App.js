@@ -98,12 +98,6 @@ var App = React.createClass({
                 }),
                 null,
                 function (data) {
-                    _notificationSystem.addNotification({
-                        "title": "Path found",
-                        "message": "Have a nice day!",
-                        "level": "success",
-                        "actionState": false
-                    });
                     Actions.receivePathResponse(data);
                 },
                 'json'
