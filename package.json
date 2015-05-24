@@ -8,6 +8,7 @@
     "npm": ">= 2.1"
   },
   "dependencies": {
+    "babelify": "*",
     "es6-promise": "^1.0.0",
     "flux": "^2.0.1",
     "jquery": "^2.1.1",
