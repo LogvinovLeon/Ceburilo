@@ -78,6 +78,8 @@ var Path = React.createClass({
                     {this.state.route.stations === undefined ?
                         null :
                         this.state.route.stations.map(this._renderMarker)}
+                    {this.state.route.beg_coord ? this._renderCustomMarker(this.state.route.beg_coord, 'start.png') : null}
+                    {this.state.route.dest_coord ? this._renderCustomMarker(this.state.route.dest_coord, 'finish.png') : null}
                     {location_circle}
                     {route}
                     {from_start}
@@ -150,8 +152,14 @@ var Path = React.createClass({
                     icon={'marker.png'}
                 />
         );
-    }
-    ,
+    },
+    _renderCustomMarker: function (location, icon_path) {
+        return (
+            <Marker position={this._toPosition(location)}
+                    icon={icon_path}
+                />
+        );
+    },
     _toPosition: function (pos) {
         if (pos.F !== undefined) {
             var res = new LatLng(pos.A, pos.F);
