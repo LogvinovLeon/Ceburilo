@@ -39,6 +39,10 @@ body {
 
 header {
     height: 55px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 footer {
@@ -53,10 +57,12 @@ footer {
 
 #logo-container > img {
     float: left;
-    height: 7%;
-    width: 7%;
+    height: 70px;
+    width: 70px;
 }
 
 .title {
-    margin-left: 10%;
+    margin: 0;
+    margin-left: 80px;
+    font-size: 36px;
 }
