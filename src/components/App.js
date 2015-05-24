@@ -104,7 +104,7 @@ var App = React.createClass({
             }
             Actions.submitPath();
             var _notificationSystem = this._notificationSystem;
-            $.get("http://neutrino.re:40000/route?" +
+            $.get("http://api.ceburilo.pl/route?" +
                 $.param({
                     beg_lat: this.state.start.location.lat,
                     beg_lon: this.state.start.location.lng,
