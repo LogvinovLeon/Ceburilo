@@ -59,6 +59,13 @@ footer {
     float: left;
     height: 70px;
     width: 70px;
+    display: none;
+}
+
+@media(min-width: 996px) {
+  #logo-container > img {
+    display: block;
+  }
 }
 
 .title {
