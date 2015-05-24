@@ -147,7 +147,7 @@ var Path = React.createClass({
         return (
             <Marker position={this._toPosition(state.location)}
                     key={i}
-                    labelContent={state.name}
+                    icon={'marker.png'}
                 />
         );
     }
