@@ -20,7 +20,7 @@ var App = React.createClass({
         render: function () {
             return (
                 <div className="App">
-                    <div className="row valign-wrapper">
+                    <div className="container row valign-wrapper">
                         <div className="col l5 m5 s12">
                             <Geosuggest id="from"
                                         ref="from"
