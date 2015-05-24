@@ -7,12 +7,14 @@ var CHANGE_EVENT = 'change';
 
 var loading = false;
 var route = {};
+var location = {};
 
 var AppStore = assign({}, EventEmitter.prototype, {
     getState() {
         return {
             loading: loading,
-            route: route
+            route: route,
+            location: location
         }
     },
     emitChange() {
@@ -37,10 +39,19 @@ AppStore.dispatcherToken = Dispatcher.register((payload) => {
         case ActionTypes.FIND_PATH_SUCCESS:
             loading = false;
             route = action.payload;
+            console.log(action);
             AppStore.emitChange();
             break;
         case ActionTypes.FIND_PATH_ERROR:
             loading = false;
+            AppStore.emitChange();
+            break;
+        case ActionTypes.LOCATION_FOUND:
+            location = action.payload;
+            AppStore.emitChange();
+            break;
+        case ActionTypes.LOCATION_LOST:
+            location = {};
             AppStore.emitChange();
             break;
         default:

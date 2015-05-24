@@ -23,6 +23,9 @@ var App = React.createClass({
                     <div className="row valign-wrapper">
                         <div className="col l5 m5 s12">
                             <Geosuggest id="from"
+                                        ref="from"
+                                        auto_detect={true}
+                                        ns={this._notificationSystem}
                                         placeholder="From"
                                         onSuggestSelect={this._onStartSelected}
                                         location={Constants.WarsawPosition}
@@ -30,6 +33,7 @@ var App = React.createClass({
                         </div>
                         <div className="col l5 m5 s12">
                             <Geosuggest id="to"
+                                        auto_detect={false}
                                         placeholder="To"
                                         onSuggestSelect={this._onFinishSelected}
                                         location={Constants.WarsawPosition}
@@ -48,6 +52,7 @@ var App = React.createClass({
         },
         /*<p>{JSON.stringify(this.state)}</p>*/
         _onSubmit: function (event) {
+            var _this = this;
             if (this.state.start.location === undefined) {
                 this._notificationSystem.addNotification({
                     "title": "Please, provide start point",
@@ -56,7 +61,7 @@ var App = React.createClass({
                     "action": {
                         "label": "Use my location",
                         "callback": function () {
-                            alert("action");
+                            _this.refs.from.getLocation();
                         }
                     },
                     "actionState": true
@@ -82,7 +87,7 @@ var App = React.createClass({
             }
             Actions.submitPath();
             var _notificationSystem = this._notificationSystem;
-            $.get("http://10.55.5.83:4000/route?" +
+            $.get("http://neutrino.re:40000/route?" +
                 $.param({
                     beg_lat: this.state.start.location.lat,
                     beg_lon: this.state.start.location.lng,
@@ -116,11 +121,9 @@ var App = React.createClass({
                 })
         },
         _onStartSelected: function (event) {
-            console.log(event);
             this.setState({start: event});
         },
         _onFinishSelected: function (event) {
-            console.log(event);
             this.setState({finish: event});
         }
     })

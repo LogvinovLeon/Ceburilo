@@ -18,5 +18,16 @@ export default {
         Dispatcher.dispatch({
             type: ActionTypes.FIND_PATH_ERROR
         });
+    },
+    locationFound: function (payload) {
+        Dispatcher.dispatch({
+            type: ActionTypes.LOCATION_FOUND,
+            payload: payload
+        });
+    },
+    locationLost: function () {
+        Dispatcher.dispatch({
+            type: ActionTypes.LOCATION_LOST
+        });
     }
 };

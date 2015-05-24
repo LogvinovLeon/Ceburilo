@@ -1,6 +1,7 @@
 var React = require('react'),
     GeosuggestItem = require('./GeosuggestItem.jsx');
-
+import $ from 'jquery'
+import Actions from '../../actions/Actions.js'
 var Geosuggest = React.createClass({
     /**
      * Get the default props
@@ -13,7 +14,8 @@ var Geosuggest = React.createClass({
             onSuggestSelect: function () {
             },
             location: null,
-            radius: 0
+            radius: 0,
+            auto_detect: false
         };
     },
 
@@ -37,6 +39,11 @@ var Geosuggest = React.createClass({
      */
     onInputChange: function () {
         var userInput = this.refs.geosuggestInput.getDOMNode().value;
+        if (userInput === "My locatio" || (/^My location./).test(userInput)) {
+            Actions.locationLost();
+            userInput = "";
+            this.props.onSuggestSelect({});
+        }
         this.setState({userInput: userInput}, function () {
             if (!userInput) {
                 this.updateSuggests();
@@ -48,11 +55,14 @@ var Geosuggest = React.createClass({
         }
         this.state.autocompleteService.getPlacePredictions({
             input: userInput,
-            location: this.props.location || new google.maps.LatLng(0, 0),
+            /*TODO*/
+            location: new google.maps.LatLng(0, 0),
             radius: this.props.radius
         }, function (suggestsGoogle) {
+            console.log("test1");
             this.updateSuggests(suggestsGoogle);
         }.bind(this));
+        console.log("test3");
     },
 
     /**
@@ -167,7 +177,6 @@ var Geosuggest = React.createClass({
                 label: this.state.userInput
             };
         }
-
         this.setState({
             isSuggestsHidden: true,
             userInput: suggest.label
@@ -175,6 +184,7 @@ var Geosuggest = React.createClass({
 
         if (suggest.location) {
             this.props.onSuggestSelect(suggest);
+            $(this.refs.geosuggestInput.getDOMNode()).focus();
             return;
         }
 
@@ -206,23 +216,80 @@ var Geosuggest = React.createClass({
             }.bind(this)
         );
     },
-
+    getLocation: function () {
+        var _this = this;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function usePosition(position) {
+                    Actions.locationFound(position);
+                    _this.selectSuggest({
+                        label: "My location",
+                        location: {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        }
+                    })
+                },
+                function showError(error) {
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            _this.props.ns.addNotification({
+                                "title": "User denied the request for Geolocation.",
+                                "level": "error",
+                                "actionState": false
+                            });
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            _this.props.ns.addNotification({
+                                "title": "Location information is unavailable.",
+                                "level": "error",
+                                "actionState": false
+                            });
+                            break;
+                        case error.TIMEOUT:
+                            _this.props.ns.addNotification({
+                                "title": "The request to get user location timed out.",
+                                "level": "error",
+                                "actionState": false
+                            });
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            _this.props.ns.addNotification({
+                                "title": "An unknown error occurred.",
+                                "level": "error",
+                                "actionState": false
+                            });
+                            break;
+                    }
+                }
+            );
+        } else {
+            this.props.ns.addNotification({
+                "title": "Geolocation is not supported by this browser.",
+                "message": "http://browsehappy.com/",
+                "level": "warning",
+                "actionState": false
+            });
+        }
+    },
     /**
      * Render the view
      */
     render: function () {
+        var class_name = (this.props.auto_detect ? "mdi-maps-my-location" : "") + " prefix";
         return (
-            <div className="geosuggest" onClick={this.onClick}>
-                <input
-                    className="geosuggest__input"
-                    ref="geosuggestInput"
-                    type="text"
-                    value={this.state.userInput}
-                    placeholder={this.props.placeholder}
-                    onKeyDown={this.onInputKeyDown}
-                    onChange={this.onInputChange}
-                    onFocus={this.showSuggests}
-                    onBlur={this.hideSuggests}/>
+            <div className="input-field geosuggest">
+                <i className={class_name} onClick={this.getLocation}></i>
+                <input id={this.props.placeholder}
+                       className="geosuggest__input"
+                       ref="geosuggestInput"
+                       type="text"
+                       value={this.state.userInput}
+                       onKeyDown={this.onInputKeyDown}
+                       onChange={this.onInputChange}
+                       onFocus={this.showSuggests}
+                       onBlur={this.hideSuggests}>
+                </input>
+                <label for={this.props.placeholder}>{this.props.placeholder}</label>
                 <ul className={this.getSuggestsClasses()}>
                     {this.getSuggestItems()}
                 </ul>

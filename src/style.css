@@ -31,12 +31,8 @@ main > .container {
 
 body {
     display: flex;
-    min-height: 100vh;
     flex-direction: column;
-}
 
-main {
-    height: 60%;
 }
 
 header {
@@ -44,7 +40,5 @@ header {
 }
 
 footer {
-    margin: 0 !important;
-    padding: 0 !important;
     height: 20%;
 }

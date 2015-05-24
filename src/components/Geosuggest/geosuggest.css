@@ -18,7 +18,6 @@
     overflow-y: auto;
     list-style: none;
     z-index: 5;
-    border: solid 1px #26a69a;
 }
 
 .geosuggest__suggests--hidden {
