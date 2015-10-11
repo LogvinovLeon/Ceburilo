@@ -6,3 +6,9 @@ node_modules
 npm-debug.log
 .idea
 bower_components
+*.swp*
+
+#cordova
+cordova-proj/platforms
+cordova-proj/plugins
+cordova-proj/resources/signing
