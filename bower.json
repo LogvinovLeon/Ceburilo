@@ -5,6 +5,19 @@
     "Leonid Logvinov <logvinov.leon@yandex.ru>"
   ],
   "dependencies": {
-    "materialize": "~0.96.1"
+    "materialize": "~0.96.1",
+    "jquery": "~2.1.4"
+  },
+  "overrides": {
+    "materialize": {
+            "main": [
+                "**/*.min.js",
+                "**/*.min.css",
+                "**/font/*/*"
+            ]
+        },
+    "jquery": {
+            "main": "**/*.min.js"
+        }
   }
 }

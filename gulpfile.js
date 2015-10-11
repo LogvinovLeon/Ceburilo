@@ -6,6 +6,7 @@ var browserify = require('browserify');
 var reactify = require('reactify');
 var watchify = require('watchify');
 var notify = require("gulp-notify");
+var mainBowerFiles = require('main-bower-files');
 var babel = require('babelify');
 var scriptsDir = './src';
 var buildDir = './build';
@@ -60,6 +61,12 @@ gulp.task('assets', function () {
         .pipe(livereload());
 });
 
+gulp.task("bower-files", function(){
+    return gulp.src(mainBowerFiles(), {base: './bower_components/'})
+        .pipe(gulp.dest(buildDir))
+        .pipe(livereload());
+});
+
 gulp.task('watch', function () {
     livereload.listen();
     gulp.watch(scriptsDir + "/**/*.html", ['html']);
@@ -67,7 +74,7 @@ gulp.task('watch', function () {
     gulp.watch(scriptsDir + "/assets/**.*", ['assets']);
 });
 
-gulp.task('build', ['html', 'css', 'assets'], function () {
+gulp.task('build', ['html', 'css', 'assets', 'bower-files'], function () {
     return buildScript('main.js', false);
 });
 
