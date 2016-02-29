@@ -8,6 +8,8 @@
     "npm": ">= 2.1"
   },
   "dependencies": {
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
     "babelify": "*",
     "browserify": "^6.0.0",
     "es6-promise": "^1.0.0",
@@ -29,5 +31,11 @@
     "reactify": "^1.1.1",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.0.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ]
   }
 }
